@@ -1,0 +1,111 @@
+hive> create table employ(emp_id int,company string,location string) clustered by (emp_id) into 5 buckets stored as orc TBLPROPERTIES('transactional'='true');
+OK
+Time taken: 0.787 seconds
+hive> INSERT INTO table employ values(1,'sai','OSI'),
+    > 
+    > (2,'traun','OSI'),
+    > 
+    > (3,'abhi','NISUM'),
+    > 
+    > (4,'ram','NISUM'),
+    > 
+    > (5,'prashanth','TCS');
+Query ID = acadgild_20170127174343_2e47accd-b07e-466e-a617-6d88af83dc16
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1485518693675_0001, Tracking URL = http://localhost:8088/proxy/application_1485518693675_0001/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1485518693675_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2017-01-27 17:43:50,362 Stage-1 map = 0%,  reduce = 0%
+2017-01-27 17:44:02,360 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.3 sec
+MapReduce Total cumulative CPU time: 2 seconds 300 msec
+Ended Job = job_1485518693675_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:9000/tmp/hive/acadgild/3fe08f21-412c-4bf8-9c03-19930a4e42c1/hive_2017-01-27_17-43-28_050_5945967890417662172-1/-ext-10000
+Loading data to table default.employ
+Table default.employ stats: [numFiles=1, numRows=5, totalSize=426, rawDataSize=895]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.3 sec   HDFS Read: 339 HDFS Write: 497 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 300 msec
+OK
+Time taken: 36.286 seconds
+hive> INSERT INTO table employ values(1,'sai','OSI'),
+    > 
+    > (2,'traun','OSI'),
+    > 
+    > (3,'abhi','NISUM'),
+    > 
+    > (4,'ram','NISUM'),
+    > 
+    > (5,'prashanth','TCS');
+Query ID = acadgild_20170127174444_1e4d988d-652a-4616-a965-49cbffccbc9e
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1485518693675_0002, Tracking URL = http://localhost:8088/proxy/application_1485518693675_0002/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1485518693675_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2017-01-27 17:44:31,715 Stage-1 map = 0%,  reduce = 0%
+2017-01-27 17:44:42,397 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.4 sec
+MapReduce Total cumulative CPU time: 2 seconds 400 msec
+Ended Job = job_1485518693675_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:9000/tmp/hive/acadgild/3fe08f21-412c-4bf8-9c03-19930a4e42c1/hive_2017-01-27_17-44-20_828_970178995677076533-1/-ext-10000
+Loading data to table default.employ
+Table default.employ stats: [numFiles=2, numRows=10, totalSize=852, rawDataSize=1790]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.4 sec   HDFS Read: 339 HDFS Write: 497 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 400 msec
+OK
+Time taken: 24.516 seconds
+hive> select * from employ;
+OK
+1	sai	OSI
+2	traun	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
+1	sai	OSI
+2	traun	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
+Time taken: 0.225 seconds, Fetched: 10 row(s)
+hive>UPDATE employ set emp_id = 7 where emp_id = 5;
+FAILED: SemanticException [Error 10294]: Attempt to do update or delete using transaction manager that does not support these operations.
+=========================================================
+
+hive>UPDATE employ set company = 'INFOSYS' where emp_id = 2;
+
+output:
+
+1	sai	OSI
+2	INFOSYS	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
+1	sai	OSI
+2	traun	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
+
+hive>delete from employ where emp_id = 2;
+
+
+output:
+
+1	sai	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
+1	sai	OSI
+2	traun	OSI
+3	abhi	NISUM
+4	ram	NISUM
+5	prashanth	TCS
